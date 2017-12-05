@@ -1,9 +1,5 @@
 ---
 
-- name: Set Full Name
-  set_fact:
-   fission_full_name: "{{ fission_name }}"
-
 - name: Select Project
   command: "oc project {{ namespace }}"
   # ignore_errors: True

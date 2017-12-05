@@ -7,22 +7,26 @@
   k8s_v1_service:
     name: router
     state: absent
+    namespace: "{{ namespace }}"
 
 - name: Delete Controller Service
   k8s_v1_service:
     name: controller
     state: absent
+    namespace: "{{ namespace }}"
 
 - name: Delete Storage Service
   k8s_v1_service:
     name: storagesvc
     state: absent
+    namespace: "{{ namespace }}"
 
 - name: Delete admin Role Binding
   k8s_v1beta1_role_binding:
     name: fission-admin
     namespace: "{{ namespace }}"
     state: absent
+    namespace: "{{ namespace }}"
 
 - name: Delete function Role Binding
   k8s_v1beta1_role_binding:
