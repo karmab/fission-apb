@@ -68,14 +68,14 @@
 
 - name: Create function Namespace
   k8s_v1_namespace:
-    name: {{ functionNamespace }}
+    name: "{{ functionNamespace }}"
     state: present
     labels:
       name: fission-function
 
 - name: Create builder Namespace
   k8s_v1_namespace:
-    name: {{ builderNamespace }}
+    name: "{{ builderNamespace }}"
     state: present
     labels:
       name: fission-builder
@@ -152,7 +152,7 @@
 - name: Create controller deployment
   k8s_v1beta1_deployment:
     name: controller
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -173,7 +173,7 @@
 - name: Create router deployment
   k8s_v1beta1_deployment:
     name: router
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -209,7 +209,7 @@
 - name: Create executor deployment
   k8s_v1beta1_deployment:
     name: executor
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -252,7 +252,7 @@
 - name: Create buildermgr deployment
   k8s_v1beta1_deployment:
     name: buildermgr
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -282,7 +282,7 @@
 - name: Create kubewatcher deployment
   k8s_v1beta1_deployment:
     name: kubewatcher
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -302,7 +302,7 @@
 - name: Create timer deployment
   k8s_v1beta1_deployment:
     name: timer
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
@@ -332,7 +332,7 @@
 - name: Create storagesvc deployment
   k8s_v1beta1_deployment:
     name: storagesvc
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
