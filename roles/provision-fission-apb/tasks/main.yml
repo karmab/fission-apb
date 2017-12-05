@@ -108,7 +108,7 @@
 - name: Create crd Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     role_ref_kind: ClusterRole
     role_ref_name: cluster-admin
     subjects:
@@ -123,7 +123,7 @@
 - name: Create fetcher Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-fetcher-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     role_ref_kind: ClusterRole
     role_ref_name: cluster-admin
     subjects:
@@ -139,7 +139,7 @@
 - name: Create builder Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-builder-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     role_ref_kind: ClusterRole
     role_ref_name: cluster-admin
     subjects:

@@ -37,7 +37,7 @@
 - name: Delete crd Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete fetcher Service Account
@@ -49,7 +49,7 @@
 - name: Delete fetcher Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-fetcher-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete builder Service Account
@@ -61,7 +61,7 @@
 - name: Delete builder Role Binding
   k8s_v1beta1_cluster_role_binding:
     name: fission-builder-crd
-    namespace: "{{ namespace }}"
+#    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete controller deployment
