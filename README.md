@@ -39,9 +39,8 @@ TODO
 
 ## STATUS
 
-```
-2017-12-05 13:48:52 +0000 UTC   2017-12-05 13:48:02 +0000 UTC   14        fission2   ServiceInstance             Warning   ReferencesNonexistentServicePlan   service-catalog-controller-manager   References a non-existent ClusterServicePlan (K8S: "" ExternalName: "default") on ClusterServiceClass (K8S: "05c1be5dd8e2aefbe37e5afb80cb9b94" ExternalName: "apb-push-fission-apb") or there is more than one (found: 0)
-```
+- failing when trying to make cluster role bindings
+
 
 ## Problems?
 
