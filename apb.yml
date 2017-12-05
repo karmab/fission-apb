@@ -46,6 +46,6 @@ plans:
         type: string
         default: fission-function
       - name: builderNamespace
-        title: Namespace for Fission environment builders	
+        title: Namespace for Fission environment builders 
         type: string
         default: fission-builder
