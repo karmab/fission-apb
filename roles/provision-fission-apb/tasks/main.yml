@@ -62,21 +62,21 @@
         protocol: TCP
 #    cluster_ip: none
 
-#- name: Create Namespaces
-#  k8s_v1_namespace:
-#    name: "{{ item }}"
-#    state: present
-#    labels:
-#      name: "{{ item }}"
-#  with_items:
-#   - "{{ functionNamespace }}"
-#   - "{{ builderNamespace }}"
-
 - name: Create Namespaces
-  command: "oc new-project {{ item }}"
+  k8s_v1_namespace:
+    name: "{{ item }}"
+    state: present
+    labels:
+      name: "{{ item }}"
   with_items:
-   - fission-function
-   - fission-builder
+   - "{{ functionNamespace }}"
+   - "{{ builderNamespace }}"
+
+#  - name: Create Namespaces
+#    command: "oc new-project {{ item }}"
+#    with_items:
+#     - fission-function
+#     - fission-builder
 
 - name: Create svc Service Account
   k8s_v1_service_account:
