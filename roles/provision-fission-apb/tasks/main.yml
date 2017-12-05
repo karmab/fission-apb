@@ -27,9 +27,9 @@
     name: router
     namespace: "{{ namespace }}"
     labels:
-      svc: router
+      service: router
     selector:
-        svc: router
+        service: router
     ports:
       - port: 80
         target_port: 8080
@@ -62,19 +62,21 @@
         protocol: TCP
 #    cluster_ip: none
 
-- name: Create function Namespace
-  k8s_v1_namespace:
-    name: "{{ functionNamespace }}"
-    state: present
-    labels:
-      name: fission-function
+#- name: Create Namespaces
+#  k8s_v1_namespace:
+#    name: "{{ item }}"
+#    state: present
+#    labels:
+#      name: "{{ item }}"
+#  with_items:
+#   - "{{ functionNamespace }}"
+#   - "{{ builderNamespace }}"
 
-- name: Create builder Namespace
-  k8s_v1_namespace:
-    name: "{{ builderNamespace }}"
-    state: present
-    labels:
-      name: fission-builder
+- name: Create Namespaces
+  command: "oc new-project {{ item }}"
+  with_items:
+   - fission-function
+   - fission-builder
 
 - name: Create svc Service Account
   k8s_v1_service_account:
