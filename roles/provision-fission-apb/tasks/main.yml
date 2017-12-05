@@ -150,7 +150,7 @@
       namespace: "{{ builderNamespace }}"
 
 - name: Create controller deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: controller
     namespace: "{{ namespace }}"
     state: present
@@ -171,7 +171,7 @@
     service_account_name: fission-svc
 
 - name: Create router deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: router
     namespace: "{{ namespace }}"
     state: present
@@ -207,7 +207,7 @@
         protocol: TCP
 
 - name: Create executor deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: executor
     namespace: "{{ namespace }}"
     state: present
@@ -250,7 +250,7 @@
         protocol: TCP
 
 - name: Create buildermgr deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: buildermgr
     namespace: "{{ namespace }}"
     state: present
@@ -280,7 +280,7 @@
     service_account_name: fission-svc
 
 - name: Create kubewatcher deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: kubewatcher
     namespace: "{{ namespace }}"
     state: present
@@ -300,7 +300,7 @@
     service_account_name: fission-svc
 
 - name: Create timer deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: timer
     namespace: "{{ namespace }}"
     state: present
@@ -330,7 +330,7 @@
 #       storage: 1Gi
 
 - name: Create storagesvc deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: storagesvc
     namespace: "{{ namespace }}"
     state: present

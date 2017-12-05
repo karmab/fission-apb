@@ -6,25 +6,6 @@
 
 - name: Select Project
   command: "oc project {{ namespace }}"
-  # ignore_errors: True
-  #
-# to be put once https://github.com/openshift/openshift-restclient-python/pull/122 is merged
-#- name: Delete Postgresql Role Binding
-#  k8s_v1alpha1_role_binding:
-#    name: postgres_edit
-#    namespace: "{{ namespace }}"
-#    role_ref_kind: Role
-#    role_ref_name: edit
-#    subjects:
-#    - kind: ServiceAccount
-#      name: "{{ database_service_name }}"
-#      namespace: "{{ namespace }}"
-#
-
-# - name: Delete Postgresql Service Account
-#  k8s_v1_service_account:
-#    name: "{{ fission_service_account }}"
-#    namespace: "{{ namespace }}"
 
 - name: Delete Router Service
   k8s_v1_service:
@@ -84,15 +65,15 @@
     state: absent
 
 - name: Delete controller deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: controller
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete router deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: router
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete executor Service
@@ -102,9 +83,9 @@
     state: absent
 
 - name: Delete executor deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: executor
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete buildermgr Service
@@ -114,21 +95,21 @@
     state: absent
 
 - name: Delete buildermgr deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: buildermgr
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete kubewatcher deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: kubewatcher
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete timer deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: timer
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 # - name: Delete fission-storage-pvc volume claim
@@ -138,9 +119,9 @@
 #     state: absent
 
 - name: Delete storagesvc deployment
-  k8s_v1beta1_deployment:
+  k8s_extensions_v1beta1_deployment:
     name: storagesvc
-    namespace: '{{ namespace }}'
+    namespace: "{{ namespace }}"
     state: absent
 
 - name: Delete svc Service Account
@@ -151,10 +132,10 @@
 
 - name: Delete Function Namespace
   k8s_v1_namespace:
-    name: {{ functionNamespace }}
+    name: "{{ functionNamespace }}"
     state: absent
 
 - name: Delete Builder Namespace
   k8s_v1_namespace:
-    name: {{ builderNamespace }}
+    name: "{{ builderNamespace }}"
     state: absent
