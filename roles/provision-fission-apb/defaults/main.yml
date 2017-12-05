@@ -1,0 +1,10 @@
+---
+serviceType: LoadBalancer
+image: fission/fission-bundle
+imageTag: alpha20170124
+fetcherImage: fission/fetcher
+fetcherImageTag: latest
+controllerPort: 31313
+routerPort: 31314
+functionNamespace: fission-function
+builderNamespace: fission-builder

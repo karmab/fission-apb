@@ -1,0 +1,160 @@
+---
+
+- name: Set Full Name
+  set_fact:
+   fission_full_name: "{{ fission_name }}"
+
+- name: Select Project
+  command: "oc project {{ namespace }}"
+  # ignore_errors: True
+  #
+# to be put once https://github.com/openshift/openshift-restclient-python/pull/122 is merged
+#- name: Delete Postgresql Role Binding
+#  k8s_v1alpha1_role_binding:
+#    name: postgres_edit
+#    namespace: "{{ namespace }}"
+#    role_ref_kind: Role
+#    role_ref_name: edit
+#    subjects:
+#    - kind: ServiceAccount
+#      name: "{{ database_service_name }}"
+#      namespace: "{{ namespace }}"
+#
+
+# - name: Delete Postgresql Service Account
+#  k8s_v1_service_account:
+#    name: "{{ fission_service_account }}"
+#    namespace: "{{ namespace }}"
+
+- name: Delete Router Service
+  k8s_v1_service:
+    name: router
+    state: absent
+
+- name: Delete Controller Service
+  k8s_v1_service:
+    name: controller
+    state: absent
+
+- name: Delete Storage Service
+  k8s_v1_service:
+    name: storagesvc
+    state: absent
+
+- name: Delete admin Role Binding
+  k8s_v1beta1_role_binding:
+    name: fission-admin
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete function Role Binding
+  k8s_v1beta1_role_binding:
+    name: fission-function-admin
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete crd Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-crd
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete fetcher Service Account
+  k8s_v1_service_account:
+    name: fission-fetcher
+    namespace: "{{ functionNamespace }}"
+    state: absent
+
+- name: Delete fetcher Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-fetcher-crd
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete builder Service Account
+  k8s_v1_service_account:
+    name: fission-builder
+    namespace: "{{ builderNamespace }}"
+    state: absent
+
+- name: Delete builder Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-builder-crd
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete controller deployment
+  k8s_v1beta1_deployment:
+    name: controller
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete router deployment
+  k8s_v1beta1_deployment:
+    name: router
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete executor Service
+  k8s_v1_service:
+    name: executor
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete executor deployment
+  k8s_v1beta1_deployment:
+    name: executor
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete buildermgr Service
+  k8s_v1_service:
+    name: buildermgr
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete buildermgr deployment
+  k8s_v1beta1_deployment:
+    name: buildermgr
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete kubewatcher deployment
+  k8s_v1beta1_deployment:
+    name: kubewatcher
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete timer deployment
+  k8s_v1beta1_deployment:
+    name: timer
+    namespace: '{{ namespace }}'
+    state: absent
+
+# - name: Delete fission-storage-pvc volume claim
+#   k8s_v1_persistent_volume_claim:
+#     name: fission-storage-pvc
+#     namespace: '{{ namespace }}'
+#     state: absent
+
+- name: Delete storagesvc deployment
+  k8s_v1beta1_deployment:
+    name: storagesvc
+    namespace: '{{ namespace }}'
+    state: absent
+
+- name: Delete svc Service Account
+  k8s_v1_service_account:
+    name: fission-svc
+    state: absent
+    namespace: "{{ namespace }}"
+
+- name: Delete Function Namespace
+  k8s_v1_namespace:
+    name: {{ functionNamespace }}
+    state: absent
+
+- name: Delete Builder Namespace
+  k8s_v1_namespace:
+    name: {{ builderNamespace }}
+    state: absent

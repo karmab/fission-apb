@@ -1,0 +1,51 @@
+name: fission-apb
+image: karmab/fission-apb
+description: APB for Fission Core
+bindable: False
+async: optional
+version: 0.4.0
+metadata:
+  displayName: fission-apb (APB)
+  imageUrl: http://fission.io/img/fission-logo.png
+plans:
+  - name: default
+    description: This default plan deploys fission-core
+    free: True
+    metadata: {}
+    parameters:
+      - name: serviceType
+        title: Type of service to use
+        type: string
+        default: LoadBalancer
+      - name: image
+        title: Fission image
+        type: string
+        default: fission/fission-bundle
+      - name: imageTag
+        title: Fission image tag
+        type: string
+        default: alpha20170124
+      - name: fetcherImage
+        title: Fission fetcher image
+        type: string
+        default: fission/fetcher
+      - name: fetcherImageTag
+        title: Fission fetcher image tag
+        type: string
+        default: latest
+      - name: controllerPort
+        title: Fission Controller Service Port
+        type: string
+        default: 31313
+      - name: routerPort
+        title: Fission Router Service Port
+        type: string
+        default: 31314
+      - name: functionNamespace
+        title: Namespace for Fission functions
+        type: string
+        default: fission-function
+      - name: builderNamespace
+        title: Namespace for Fission environment builders	
+        type: string
+        default: fission-builder
