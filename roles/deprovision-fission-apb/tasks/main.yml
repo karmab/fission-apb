@@ -34,11 +34,10 @@
     namespace: "{{ namespace }}"
     state: absent
 
-- name: Delete crd Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-crd
-#    namespace: "{{ namespace }}"
-    state: absent
+#- name: Delete crd Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-crd
+#    state: absent
 
 - name: Delete fetcher Service Account
   k8s_v1_service_account:
@@ -46,11 +45,10 @@
     namespace: "{{ functionNamespace }}"
     state: absent
 
-- name: Delete fetcher Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-fetcher-crd
-#    namespace: "{{ namespace }}"
-    state: absent
+#- name: Delete fetcher Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-fetcher-crd
+#    state: absent
 
 - name: Delete builder Service Account
   k8s_v1_service_account:
@@ -58,11 +56,10 @@
     namespace: "{{ builderNamespace }}"
     state: absent
 
-- name: Delete builder Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-builder-crd
-#    namespace: "{{ namespace }}"
-    state: absent
+#- name: Delete builder Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-builder-crd
+#    state: absent
 
 - name: Delete controller deployment
   k8s_extensions_v1beta1_deployment:
@@ -130,12 +127,12 @@
     state: absent
     namespace: "{{ namespace }}"
 
-- name: Delete Function Namespace
-  k8s_v1_namespace:
-    name: "{{ functionNamespace }}"
-    state: absent
-
-- name: Delete Builder Namespace
-  k8s_v1_namespace:
-    name: "{{ builderNamespace }}"
-    state: absent
+#- name: Delete Function Namespace
+#  k8s_v1_namespace:
+#    name: "{{ functionNamespace }}"
+#    state: absent
+#
+#- name: Delete Builder Namespace
+#  k8s_v1_namespace:
+#    name: "{{ builderNamespace }}"
+#    state: absent
