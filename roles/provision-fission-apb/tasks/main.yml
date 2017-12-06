@@ -2,25 +2,10 @@
 
 - name: Select Project
   command: "oc project {{ namespace }}"
-  # ignore_errors: True
-  #
-# to be put once https://github.com/openshift/openshift-restclient-python/pull/122 is merged
-#- name: Create Postgresql Role Binding
-#  k8s_v1alpha1_role_binding:
-#    name: postgres_edit
-#    namespace: "{{ namespace }}"
-#    role_ref_kind: Role
-#    role_ref_name: edit
-#    subjects:
-#    - kind: ServiceAccount
-#      name: "{{ database_service_name }}"
-#      namespace: "{{ namespace }}"
-#
 
-# - name: Create Postgresql Service Account
-#  k8s_v1_service_account:
-#    name: "{{ fission_service_account }}"
-#    namespace: "{{ namespace }}"
+#- name: Kitkat Pause
+#  pause:
+#    minutes: 6
 
 - name: Create router Service
   k8s_v1_service:
@@ -62,21 +47,15 @@
         protocol: TCP
 #    cluster_ip: none
 
-- name: Create Namespaces
-  k8s_v1_namespace:
-    name: "{{ item }}"
-    state: present
-    labels:
-      name: "{{ item }}"
-  with_items:
-   - "{{ functionNamespace }}"
-   - "{{ builderNamespace }}"
-
-#  - name: Create Namespaces
-#    command: "oc new-project {{ item }}"
-#    with_items:
-#     - fission-function
-#     - fission-builder
+#- name: Create Namespaces
+#  k8s_v1_namespace:
+#    name: "{{ item }}"
+#    state: present
+#    labels:
+#      name: "{{ item }}"
+#  with_items:
+#   - "{{ functionNamespace }}"
+#   - "{{ builderNamespace }}"
 
 - name: Create svc Service Account
   k8s_v1_service_account:
@@ -105,47 +84,45 @@
       name: fission-svc
       namespace: "{{ functionNamespace }}"
 
-- name: Create crd Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-crd
-#    namespace: "{{ namespace }}"
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-svc
+#- name: Create crd Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-svc
+#      namespace: "{{ namespace }}"
 
 - name: Create fetcher Service Account
   k8s_v1_service_account:
     name: fission-fetcher
     namespace: "{{ functionNamespace }}"
 
-- name: Create fetcher Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-fetcher-crd
-#    namespace: "{{ namespace }}"
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-fetcher
-      namespace: "{{ functionNamespace }}"
+#- name: Create fetcher Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-fetcher-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-fetcher
+#      namespace: "{{ functionNamespace }}"
 
 - name: Create builder Service Account
   k8s_v1_service_account:
     name: fission-builder
     namespace: "{{ builderNamespace }}"
 
-- name: Create builder Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-builder-crd
-#    namespace: "{{ namespace }}"
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-fetcher
-      namespace: "{{ builderNamespace }}"
+#- name: Create builder Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-builder-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-fetcher
+#      namespace: "{{ builderNamespace }}"
 
 - name: Create controller deployment
   k8s_extensions_v1beta1_deployment:

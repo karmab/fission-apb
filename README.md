@@ -39,8 +39,8 @@ TODO
 
 ## STATUS
 
-- failing when trying to make cluster role bindings
-
+- failing when trying to make cluster role bindings (necessary for fission crd) or trying to create namespaces. APB cant be used to do actions clusterwide
+refer to [manually.md](manually.md) for additional operations
 
 ## Problems?
 
