@@ -33,14 +33,16 @@ oc create -f launch.yml
 
 you can use the [*helper\_script ansible_logs.sh*](helper_scripts/ansible_logs.sh) to see the provisioning of your service
 
-## tips on openshift 
-
-TODO
 
 ## STATUS
 
 - failing when trying to make cluster role bindings (necessary for fission crd) or trying to create namespaces. APB cant be used to do actions clusterwide
 refer to [manually.md](manually.md) for additional operations
+- also fail when commenting this part with the following
+```
+TASK [provision-fission-apb : Create fetcher Service Account] ******************
+fatal: [localhost]: FAILED! => {"changed": false, "error": 403, "failed": true, "msg": "Failed to retrieve requested object: User \"system:serviceaccount:apb-push-fission-apb-prov-zkkgd:apb-c2156b02-3be8-493e-8200-1d0b7295f63c\" cannot get serviceaccounts in the namespace \"fission-function\": User \"system:serviceaccount:apb-push-fission-apb-prov-zkkgd:apb-c2156b02-3be8-493e-8200-1d0b7295f63c\" cannot get serviceaccounts in project \"fission-function\""}
+```
 
 ## Problems?
 
