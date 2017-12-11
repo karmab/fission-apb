@@ -3,7 +3,7 @@ serviceType: LoadBalancer
 image: fission/fission-bundle
 imageTag: 0.4.0
 fetcherImage: fission/fetcher
-fetcherImageTag: latest
+fetcherImageTag: 0.4.0
 controllerPort: 31313
 routerPort: 31314
 functionNamespace: fission-function
