@@ -17,7 +17,7 @@
         service: router
     ports:
       - port: 80
-        target_port: 8080
+        target_port: 8888
         protocol: TCP
 
 - name: Create controller Service
@@ -30,7 +30,7 @@
         svc: controller
     ports:
       - port: 80
-        target_port: 8088
+        target_port: 8888
         protocol: TCP
 
 - name: Create storage Service
