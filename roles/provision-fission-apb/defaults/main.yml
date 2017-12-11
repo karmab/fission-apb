@@ -1,8 +1,7 @@
 ---
 serviceType: LoadBalancer
 image: fission/fission-bundle
-#imageTag: 0.4.0
-imageTag: 20171206
+imageTag: 0.4.0
 fetcherImage: fission/fetcher
 fetcherImageTag: latest
 controllerPort: 31313
