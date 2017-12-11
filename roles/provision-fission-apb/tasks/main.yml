@@ -37,6 +37,7 @@
   k8s_v1_service:
     name: storagesvc
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
       svc: storagesvc
     selector:
@@ -172,6 +173,7 @@
   k8s_v1_service:
     name: executor
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
       svc: executor
     selector:
@@ -215,6 +217,7 @@
   k8s_v1_service:
     name: buildermgr
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
       svc: buildermgr
     selector:
