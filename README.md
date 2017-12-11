@@ -39,6 +39,7 @@ you can use the [*helper\_script ansible_logs.sh*](helper_scripts/ansible_logs.s
 can only be used manually from a cluster-admin account because of missing privileges. For this, the asb role is commented in the playbooks
 
 ```
+export ANSIBLE_ROLES_PATH=roles
 ansible-playbook playbooks/provision.yml -e namespace=default
 ```
 
