@@ -36,6 +36,14 @@ you can use the [*helper\_script ansible_logs.sh*](helper_scripts/ansible_logs.s
 
 ## STATUS
 
+can only be used manually from a cluster-admin account because of missing privileges. For this, the asb role is commented in the playbooks
+
+```
+ansible-playbook playbooks/provision.yml -e namespace=default
+```
+
+those are the errors beeing faced 
+
 - failing when trying to make cluster role bindings (necessary for fission crd) or trying to create namespaces. APB cant be used to do actions clusterwide
 refer to [manually.md](manually.md) for additional operations
 - also fail when commenting this part with the following

@@ -47,15 +47,15 @@
         protocol: TCP
 #    cluster_ip: none
 
-#- name: Create Namespaces
-#  k8s_v1_namespace:
-#    name: "{{ item }}"
-#    state: present
-#    labels:
-#      name: "{{ item }}"
-#  with_items:
-#   - "{{ functionNamespace }}"
-#   - "{{ builderNamespace }}"
+- name: Create Namespaces
+  k8s_v1_namespace:
+    name: "{{ item }}"
+    state: present
+    labels:
+      name: "{{ item }}"
+  with_items:
+   - "{{ functionNamespace }}"
+   - "{{ builderNamespace }}"
 
 - name: Create svc Service Account
   k8s_v1_service_account:
@@ -84,45 +84,45 @@
       name: fission-svc
       namespace: "{{ functionNamespace }}"
 
-#- name: Create crd Role Binding
-#  k8s_v1beta1_cluster_role_binding:
-#    name: fission-crd
-#    role_ref_kind: ClusterRole
-#    role_ref_name: cluster-admin
-#    subjects:
-#    - kind: ServiceAccount
-#      name: fission-svc
-#      namespace: "{{ namespace }}"
+- name: Create crd Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-crd
+    role_ref_kind: ClusterRole
+    role_ref_name: cluster-admin
+    subjects:
+    - kind: ServiceAccount
+      name: fission-svc
+      namespace: "{{ namespace }}"
 
 - name: Create fetcher Service Account
   k8s_v1_service_account:
     name: fission-fetcher
     namespace: "{{ functionNamespace }}"
 
-#- name: Create fetcher Role Binding
-#  k8s_v1beta1_cluster_role_binding:
-#    name: fission-fetcher-crd
-#    role_ref_kind: ClusterRole
-#    role_ref_name: cluster-admin
-#    subjects:
-#    - kind: ServiceAccount
-#      name: fission-fetcher
-#      namespace: "{{ functionNamespace }}"
+- name: Create fetcher Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-fetcher-crd
+    role_ref_kind: ClusterRole
+    role_ref_name: cluster-admin
+    subjects:
+    - kind: ServiceAccount
+      name: fission-fetcher
+      namespace: "{{ functionNamespace }}"
 
 - name: Create builder Service Account
   k8s_v1_service_account:
     name: fission-builder
     namespace: "{{ builderNamespace }}"
 
-#- name: Create builder Role Binding
-#  k8s_v1beta1_cluster_role_binding:
-#    name: fission-builder-crd
-#    role_ref_kind: ClusterRole
-#    role_ref_name: cluster-admin
-#    subjects:
-#    - kind: ServiceAccount
-#      name: fission-fetcher
-#      namespace: "{{ builderNamespace }}"
+- name: Create builder Role Binding
+  k8s_v1beta1_cluster_role_binding:
+    name: fission-builder-crd
+    role_ref_kind: ClusterRole
+    role_ref_name: cluster-admin
+    subjects:
+    - kind: ServiceAccount
+      name: fission-fetcher
+      namespace: "{{ builderNamespace }}"
 
 - name: Create controller deployment
   k8s_extensions_v1beta1_deployment:
@@ -131,17 +131,17 @@
     state: present
     replicas: 1
     spec_template_metadata_labels:
-        svc: controller
+      svc: controller
     spec_template_metadata_name: controller
     # termination_grace_period_seconds: 10
     containers:
       - name: controller
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
-         - --controllerPort
-         - 8888
+         - "--controllerPort"
+         - "8888"
         imagePullPolicy: Always
     service_account_name: fission-svc
 
@@ -157,12 +157,12 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: router
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
          - --routerPort
-         - 8888
+         - "8888"
          - --executorUrl
          - "http://executor.{{ namespace }}"
         imagePullPolicy: Always
@@ -193,19 +193,19 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: executor
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
          - --executorPort
-         - 8888
+         - "8888"
          - --namespace
          - "{{ functionNamespace }}"
          - --fission-namespace
          - "{{ namespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}/{{ fetcherImageTag }}"
+          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always
@@ -236,19 +236,19 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: buildermgr
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
          - --builderMgrPort
-         - 8889
+         - "8889"
          - --storageSvcUrl
          - "http://storagesvc.{{ namespace }}"
          - --envbuilder-namespace
          - "{{ builderNamespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}/{{ fetcherImageTag }}"
+          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always
@@ -266,7 +266,7 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: kubewatcher
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
@@ -286,7 +286,7 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: timer
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
@@ -316,12 +316,12 @@
     # termination_grace_period_seconds: 10
     containers:
       - name: storagesvc
-        image: "{{ image }}/{{ imageTag }}"
+        image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
          - --storageServicePort
-         - 8000
+         - "8000"
          - --filePath
          - /fission
         volumeMounts:
