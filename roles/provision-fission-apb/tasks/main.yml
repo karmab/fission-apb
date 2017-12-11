@@ -30,13 +30,14 @@
         svc: controller
     ports:
       - port: 80
-        target_port: 8088
+        target_port: 8888
         protocol: TCP
 
 - name: Create storage Service
   k8s_v1_service:
     name: storagesvc
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
       svc: storagesvc
     selector:
@@ -163,41 +164,42 @@
         args:
          - --routerPort
          - "8888"
-         - --executorUrl
-         - "http://executor.{{ namespace }}"
+         - --poolmgrUrl
+         - "http://poolmgr.{{ namespace }}"
         imagePullPolicy: Always
     service_account_name: fission-svc
 
-- name: Create executor Service
+- name: Create poolmgr Service
   k8s_v1_service:
-    name: executor
+    name: poolmgr
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
-      svc: executor
+      svc: poolmgr
     selector:
-        svc: executor
+        svc: poolmgr
     ports:
       - port: 80
         target_port: 8888
         protocol: TCP
 
-- name: Create executor deployment
+- name: Create poolmgr deployment
   k8s_extensions_v1beta1_deployment:
-    name: executor
+    name: poolmgr
     namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
-        svc: executor
-    spec_template_metadata_name: executor
+        svc: poolmgr
+    spec_template_metadata_name: poolmgr
     # termination_grace_period_seconds: 10
     containers:
-      - name: executor
+      - name: poolmgr
         image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
-         - --executorPort
+         - --poolmgrPort
          - "8888"
          - --namespace
          - "{{ functionNamespace }}"
@@ -215,6 +217,7 @@
   k8s_v1_service:
     name: buildermgr
     namespace: "{{ namespace }}"
+    spec_type: ClusterIP
     labels:
       svc: buildermgr
     selector:
