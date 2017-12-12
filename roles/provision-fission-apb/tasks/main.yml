@@ -11,6 +11,7 @@
   k8s_v1_service:
     name: router
     namespace: "{{ namespace }}"
+    spec_type: LoadBalancer
     labels:
       svc: router
     selector:
@@ -24,6 +25,7 @@
   k8s_v1_service:
     name: controller
     namespace: "{{ namespace }}"
+    spec_type: LoadBalancer
     labels:
       svc: controller
     selector:
