@@ -27,10 +27,6 @@ desc "Install python modules"
 run "pip install ansible openshift"
 
 backtotop
-desc "Install ansible module"
-run "ansible-galaxy install ansible.kubernetes-modules"
-
-backtotop
 desc "Clone my repo"
 run "git clone https://github.com/karmab/fission-apb.git"
 
@@ -41,6 +37,10 @@ run "cd fission-apb"
 backtotop
 desc "Set ansible roles path"
 run "export ANSIBLE_ROLES_PATH=roles"
+
+backtotop
+desc "Install ansible module"
+run "ansible-galaxy install ansible.kubernetes-modules"
 
 backtotop
 desc "Deploy"
