@@ -22,7 +22,7 @@
         protocol: TCP
 
 - name: Create router route
-  openshift_v1_route.yml:
+  openshift_v1_route:
     name: router
     namespace: "{{ namespace }}"
     state: present
@@ -44,7 +44,7 @@
         protocol: TCP
 
 - name: Create controller route
-  openshift_v1_route.yml:
+  openshift_v1_route:
     name: controller
     namespace: "{{ namespace }}"
     state: present
