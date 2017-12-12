@@ -240,7 +240,7 @@
          - "{{ namespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
+          value: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always
