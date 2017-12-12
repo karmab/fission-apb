@@ -72,7 +72,7 @@ run "cat ~/hello.py"
 
 backtotop
 desc "Create a function"
-run "fission function create --name hellopy --env python --code hello.py"
+run "fission function create --name hellopy --env python --code ~/hello.py"
 
 backtotop
 desc "Create a route"
@@ -83,8 +83,8 @@ desc "Execute my function"
 run "curl http://$FISSION_ROUTER/hellopy"
 
 backtotop
-desc "Deploy"
-run "ansible-playbook playbooks/depprovision.yml -e namespace=fission"
+desc "Undeploy"
+run "ansible-playbook playbooks/deprovision.yml -e namespace=fission"
 
 backtotop
 desc "Check pods are gone"
