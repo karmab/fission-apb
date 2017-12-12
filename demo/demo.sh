@@ -3,6 +3,10 @@
 source `which util.sh`
 
 backtotop
+desc "Log in openshift"
+run "oc login  -u developer -p developer --insecure-skip-tls-verify=true localhost:8443"
+
+backtotop
 desc "Create a dedicated project"
 run "oc new-project fission"
 

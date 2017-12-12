@@ -18,9 +18,11 @@ fissiondemo:
   - path: /usr/bin/util.sh
     origin: util.sh
     mode: 700
-  - path: /home/fedora/demo.sh
+  - path: /root/demo.sh
     origin: demo.sh
+    mode: 700
   - path: /etc/yum.repos.d/pv.repo
     origin: pv.repo
-  - path: /home/fedora/hello.py
+  - path: /root/hello.py
     origin: hello.py
+    mode: 700
