@@ -21,6 +21,14 @@
         target_port: 8888
         protocol: TCP
 
+- name: Create router route
+  openshift_v1_route.yml:
+    name: router
+    namespace: "{{ namespace }}"
+    state: present
+    spec_to_kind: Service
+    spec_to_name: router
+
 - name: Create controller Service
   k8s_v1_service:
     name: controller
@@ -34,6 +42,14 @@
       - port: 80
         target_port: 8888
         protocol: TCP
+
+- name: Create controller route
+  openshift_v1_route.yml:
+    name: controller
+    namespace: "{{ namespace }}"
+    state: present
+    spec_to_kind: Service
+    spec_to_name: controller
 
 - name: Create storage Service
   k8s_v1_service:
