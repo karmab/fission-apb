@@ -3,11 +3,23 @@
 - name: Select Project
   command: "oc project {{ namespace }}"
 
+- name: Delete router route
+  openshift_v1_route:
+    name: router
+    namespace: "{{ namespace }}"
+    state: absent
+
 - name: Delete Router Service
   k8s_v1_service:
     name: router
     state: absent
     namespace: "{{ namespace }}"
+
+- name: Delete controller route
+  openshift_v1_route:
+    name: controller
+    namespace: "{{ namespace }}"
+    state: absent
 
 - name: Delete Controller Service
   k8s_v1_service:
@@ -73,15 +85,15 @@
     namespace: "{{ namespace }}"
     state: absent
 
-- name: Delete executor Service
+- name: Delete poolmgr Service
   k8s_v1_service:
-    name: executor
+    name: poolmgr
     namespace: "{{ namespace }}"
     state: absent
 
-- name: Delete executor deployment
+- name: Delete poolmgr deployment
   k8s_extensions_v1beta1_deployment:
-    name: executor
+    name: poolmgr
     namespace: "{{ namespace }}"
     state: absent
 
