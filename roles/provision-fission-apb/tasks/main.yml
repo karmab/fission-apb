@@ -11,19 +11,29 @@
   k8s_v1_service:
     name: router
     namespace: "{{ namespace }}"
+    spec_type: LoadBalancer
     labels:
-      service: router
+      svc: router
     selector:
-        service: router
+        svc: router
     ports:
       - port: 80
         target_port: 8888
         protocol: TCP
 
+- name: Create router route
+  openshift_v1_route:
+    name: router
+    namespace: "{{ namespace }}"
+    state: present
+    spec_to_kind: Service
+    spec_to_name: router
+
 - name: Create controller Service
   k8s_v1_service:
     name: controller
     namespace: "{{ namespace }}"
+    spec_type: LoadBalancer
     labels:
       svc: controller
     selector:
@@ -32,6 +42,14 @@
       - port: 80
         target_port: 8888
         protocol: TCP
+
+- name: Create controller route
+  openshift_v1_route:
+    name: controller
+    namespace: "{{ namespace }}"
+    state: present
+    spec_to_kind: Service
+    spec_to_name: controller
 
 - name: Create storage Service
   k8s_v1_service:
@@ -63,67 +81,82 @@
     name: fission-svc
     namespace: "{{ namespace }}"
 
+#- name: Create admin Role Binding
+#  k8s_v1beta1_role_binding:
+#    name: fission-admin 
+#    namespace: "{{ namespace }}"
+#    role_ref_kind: ClusterRole
+#    role_ref_name: admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-svc
+#      namespace: "{{ namespace }}"
+
 - name: Create admin Role Binding
-  k8s_v1beta1_role_binding:
-    name: fission-admin 
-    namespace: "{{ namespace }}"
-    role_ref_kind: ClusterRole
-    role_ref_name: admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-svc
-      namespace: "{{ namespace }}"
+  command: "oc adm policy add-cluster-role-to-user cluster-admin -z fission-svc -n {{ namespace }}"
+
+#- name: Create function Role Binding
+#  k8s_v1beta1_role_binding:
+#    name: fission-function-admin
+#    namespace: "{{ namespace }}"
+#    role_ref_kind: ClusterRole
+#    role_ref_name: admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-svc
+#      namespace: "{{ functionNamespace }}"
 
 - name: Create function Role Binding
-  k8s_v1beta1_role_binding:
-    name: fission-function-admin
-    namespace: "{{ namespace }}"
-    role_ref_kind: ClusterRole
-    role_ref_name: admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-svc
-      namespace: "{{ functionNamespace }}"
+  command: "oc adm policy add-role-to-user admin -z fission-svc -n {{ functionNamespace }}"
+
+#- name: Create crd Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-svc
+#      namespace: "{{ namespace }}"
 
 - name: Create crd Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-crd
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-svc
-      namespace: "{{ namespace }}"
+  command: "oc adm policy add-cluster-role-to-user cluster-admin -z fission-crd -n {{ namespace }}"
 
 - name: Create fetcher Service Account
   k8s_v1_service_account:
     name: fission-fetcher
     namespace: "{{ functionNamespace }}"
 
+#- name: Create fetcher Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-fetcher-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-fetcher
+#      namespace: "{{ functionNamespace }}"
+
 - name: Create fetcher Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-fetcher-crd
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-fetcher
-      namespace: "{{ functionNamespace }}"
+  command: "oc adm policy add-cluster-role-to-user cluster-admin -z fission-fetcher -n {{ functionNamespace }}"
 
 - name: Create builder Service Account
   k8s_v1_service_account:
     name: fission-builder
     namespace: "{{ builderNamespace }}"
 
+#- name: Create builder Role Binding
+#  k8s_v1beta1_cluster_role_binding:
+#    name: fission-builder-crd
+#    role_ref_kind: ClusterRole
+#    role_ref_name: cluster-admin
+#    subjects:
+#    - kind: ServiceAccount
+#      name: fission-fetcher
+#      namespace: "{{ builderNamespace }}"
+
 - name: Create builder Role Binding
-  k8s_v1beta1_cluster_role_binding:
-    name: fission-builder-crd
-    role_ref_kind: ClusterRole
-    role_ref_name: cluster-admin
-    subjects:
-    - kind: ServiceAccount
-      name: fission-fetcher
-      namespace: "{{ builderNamespace }}"
+  command: "oc adm policy add-cluster-role-to-user cluster-admin -z fission-builder -n {{ builderNamespace }}"
 
 - name: Create controller deployment
   k8s_extensions_v1beta1_deployment:
@@ -207,7 +240,7 @@
          - "{{ namespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
+          value: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always
@@ -251,7 +284,7 @@
          - "{{ builderNamespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
+          value: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always
