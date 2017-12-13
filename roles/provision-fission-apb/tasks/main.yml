@@ -197,42 +197,42 @@
         args:
          - --routerPort
          - "8888"
-         - --poolmgrUrl
-         - "http://poolmgr.{{ namespace }}"
+         - --executorUrl
+         - "http://executor.{{ namespace }}"
         imagePullPolicy: Always
     service_account_name: fission-svc
 
-- name: Create poolmgr Service
+- name: Create executor Service
   k8s_v1_service:
-    name: poolmgr
+    name: executor
     namespace: "{{ namespace }}"
     spec_type: ClusterIP
     labels:
-      svc: poolmgr
+      svc: executor
     selector:
-        svc: poolmgr
+        svc: executor
     ports:
       - port: 80
         target_port: 8888
         protocol: TCP
 
-- name: Create poolmgr deployment
+- name: Create executor deployment
   k8s_extensions_v1beta1_deployment:
-    name: poolmgr
+    name: executor
     namespace: "{{ namespace }}"
     state: present
     replicas: 1
     spec_template_metadata_labels:
-        svc: poolmgr
-    spec_template_metadata_name: poolmgr
+        svc: executor
+    spec_template_metadata_name: executor
     # termination_grace_period_seconds: 10
     containers:
-      - name: poolmgr
+      - name: executor
         image: "{{ image }}:{{ imageTag }}"
         command:
          - /fission-bundle
         args:
-         - --poolmgrPort
+         - --executorPort
          - "8888"
          - --namespace
          - "{{ functionNamespace }}"
@@ -284,7 +284,7 @@
          - "{{ builderNamespace }}"
         env:
         - name: FETCHER_IMAGE
-          image: "{{ fetcherImage }}:{{ fetcherImageTag }}"
+          value: "{{ fetcherImage }}:{{ fetcherImageTag }}"
         - name: FETCHER_IMAGE_PULL_POLICY
           value: Always
         imagePullPolicy: Always

@@ -3,11 +3,65 @@
 - name: Select Project
   command: "oc project {{ namespace }}"
 
+- name: Delete timer deployment
+  k8s_extensions_v1beta1_deployment:
+    name: timer
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete storagesvc deployment
+  k8s_extensions_v1beta1_deployment:
+    name: storagesvc
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete kubewatcher deployment
+  k8s_extensions_v1beta1_deployment:
+    name: kubewatcher
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete buildermgr deployment
+  k8s_extensions_v1beta1_deployment:
+    name: buildermgr
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete executor deployment
+  k8s_extensions_v1beta1_deployment:
+    name: executor
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete controller deployment
+  k8s_extensions_v1beta1_deployment:
+    name: controller
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete router deployment
+  k8s_extensions_v1beta1_deployment:
+    name: router
+    namespace: "{{ namespace }}"
+    state: absent
+
+- name: Delete router route
+  openshift_v1_route:
+    name: router
+    namespace: "{{ namespace }}"
+    state: absent
+
 - name: Delete Router Service
   k8s_v1_service:
     name: router
     state: absent
     namespace: "{{ namespace }}"
+
+- name: Delete controller route
+  openshift_v1_route:
+    name: controller
+    namespace: "{{ namespace }}"
+    state: absent
 
 - name: Delete Controller Service
   k8s_v1_service:
@@ -61,26 +115,8 @@
     name: fission-builder-crd
     state: absent
 
-- name: Delete controller deployment
-  k8s_extensions_v1beta1_deployment:
-    name: controller
-    namespace: "{{ namespace }}"
-    state: absent
-
-- name: Delete router deployment
-  k8s_extensions_v1beta1_deployment:
-    name: router
-    namespace: "{{ namespace }}"
-    state: absent
-
 - name: Delete executor Service
   k8s_v1_service:
-    name: executor
-    namespace: "{{ namespace }}"
-    state: absent
-
-- name: Delete executor deployment
-  k8s_extensions_v1beta1_deployment:
     name: executor
     namespace: "{{ namespace }}"
     state: absent
@@ -88,36 +124,6 @@
 - name: Delete buildermgr Service
   k8s_v1_service:
     name: buildermgr
-    namespace: "{{ namespace }}"
-    state: absent
-
-- name: Delete buildermgr deployment
-  k8s_extensions_v1beta1_deployment:
-    name: buildermgr
-    namespace: "{{ namespace }}"
-    state: absent
-
-- name: Delete kubewatcher deployment
-  k8s_extensions_v1beta1_deployment:
-    name: kubewatcher
-    namespace: "{{ namespace }}"
-    state: absent
-
-- name: Delete timer deployment
-  k8s_extensions_v1beta1_deployment:
-    name: timer
-    namespace: "{{ namespace }}"
-    state: absent
-
-# - name: Delete fission-storage-pvc volume claim
-#   k8s_v1_persistent_volume_claim:
-#     name: fission-storage-pvc
-#     namespace: '{{ namespace }}'
-#     state: absent
-
-- name: Delete storagesvc deployment
-  k8s_extensions_v1beta1_deployment:
-    name: storagesvc
     namespace: "{{ namespace }}"
     state: absent
 
